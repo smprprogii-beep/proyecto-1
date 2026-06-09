@@ -23,6 +23,7 @@ git add . agrega todos los cambios
 Agregar todos los cambios:
 
 git add .
+
 git commit
 
 Guarda una versión del proyecto.
@@ -33,11 +34,16 @@ git commit -m "Agrega sistema de login"
 
 El mensaje debe explicar qué cambió.
 
+
+
+
 git push
 
 Sube los commits a GitHub.
 
 git push
+
+
 git pull
 
 Descarga cambios desde GitHub.
