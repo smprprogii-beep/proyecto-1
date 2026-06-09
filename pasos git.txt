@@ -1,0 +1,59 @@
+git status
+
+Muestra el estado del proyecto:
+
+archivos modificados
+archivos preparados
+archivos sin guardar
+git status
+
+Es uno de los comandos más importantes.
+
+git add
+
+Prepara archivos para el próximo commit.
+
+NO guarda cambios.
+
+git add archivo.py
+
+o
+
+git add . agrega todos los cambios
+Agregar todos los cambios:
+
+git add .
+git commit
+
+Guarda una versión del proyecto.
+
+git commit -m "Agrega sistema de login"
+
+-m significa message.
+
+El mensaje debe explicar qué cambió.
+
+git push
+
+Sube los commits a GitHub.
+
+git push
+git pull
+
+Descarga cambios desde GitHub.
+
+git pull
+git clone
+
+Descarga un repositorio completo.
+
+git clone URL
+
+Ejemplo:
+
+git clone https://github.com/usuario/proyecto.git
+git log
+
+Muestra el historial de commits.
+
+git log
