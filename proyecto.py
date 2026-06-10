@@ -1,4 +1,6 @@
 import csv
+import streamlit as st
+import matplotlib.pyplot as plt
 #agarra la lista de la linea de datos del excel y crea la lista de solo las ciudades
 
 """
@@ -67,6 +69,26 @@ def main():
         var1 = mas_apariciones(lista_excel(registro))  
     print(var1)
 
+    
+
+    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "Pregunta siguiente"])
+
+    with tab1:
+        st.header("Gráfica de mediciones")
+    
+        data = {'apple': 10, 'orange': 15, 'lemon': 5, 'lime': 20}
+        names = list(data.keys())
+        values = list(data.values())
+
+        fig, ax = plt.subplots(figsize=(5, 4))
+        ax.bar(names, values)
+        st.pyplot(fig)
+    with tab2:
+        st.header("Representación")
+        st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+    with tab3:
+        st.header("Representacion")
+        st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
 
 if __name__=="__main__":
     main()
