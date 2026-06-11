@@ -1,47 +1,14 @@
 import csv
 import streamlit as st
 import matplotlib.pyplot as plt
-#agarra la lista de la linea de datos del excel y crea la lista de solo las ciudades
 
-"""
-listaa= type(lista)
-funcion lista_excel que toma una lista de datos y agrega a listaa el segundo valor de la lista dada, devuelve el resultado de la lista
-lista-excel(lista_datos==lista)-> lista
-ejemplos:
-    lista_excel(['2025-12-25T16:00','Los Angeles','34.0522','-118.2437' ]) -> ['Los Angeles']
-    lista_excel(['2025-11-10T10:30','Rosario','-32.9442','-60.6505'])-> ['Los Angeles', 'Rosario']
-    lista_excel(['2025-01-01T08:00','Cordoba']), -> ['Los Angeles', 'Rosario', 'Cordoba']
+
+#toma lista defilas del excel y devuelve la de la posicion 1
+def lista_excel(registro):
+    return registro[1]
     
 
-"""
 
-def lista_excel(lista_datos, listaa=[]):
-    listaa.append(lista_datos[1])
-    return listaa
-
-
-"""dato_ciudades = type(diccionario)
-
-funcion mas_apariciones que toma una lista 
-de ciudades y guarda en dato_ciudades
-cada ciudad como clave y la cantidad de apariciones como valor, devuelve el diccionario resultante
-
-mas_apariciones(listass==lista) -> diccionario
-
-ejemplos:
-    mas_apariciones(['Rosario','Cordoba','Rosario']) -> {'Rosario': 2, 'Cordoba': 1}
-
-    mas_apariciones(['Buenos Aires','Rosario','Cordoba','Rosario']) 
-    -> {'Buenos Aires': 1, 'Rosario': 2, 'Cordoba': 1}
-
-    mas_apariciones(['Mendoza','Mendoza','Mendoza']) 
-    -> {'Mendoza': 3}
-
-
-chequeos:
-    type(listass) == list
-    len(listass) > 0
-    type(ciudad) == str"""
 
 #toma lista de ciudade y las devuelve en libreria id=ciudad dato= cantidad de apariciones
 def mas_apariciones(listass):
@@ -65,30 +32,39 @@ def main():
     archivo_csv = open("global_urban_smog_pm25_hourly_12k.csv")
     reader = csv.reader(archivo_csv)
     reader.__next__() # Saltea la primera linea, la de los titulos.
+    ciudades = [] # variable para inicializar lista
     for registro in reader:
-        var1 = mas_apariciones(lista_excel(registro))  
-    print(var1)
-
-    
-
+        ciudades.append(lista_excel(registro)) #crea la lista de solo las ciudades
+        #pregunta2
+        #pregunta3
+        #pregunta4
+        #pregunta5
+        #pregunta6
+    var1 = mas_apariciones(ciudades)  # var1 usa la funcion mas_apariciones con la lista ciudades y 
+                                      #devuelve libreria con ciudad:apariciones
     tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "Pregunta siguiente"])
-
     with tab1:
         st.header("Gráfica de mediciones")
-    
-        data = {'apple': 10, 'orange': 15, 'lemon': 5, 'lime': 20}
+
+        data = var1
         names = list(data.keys())
         values = list(data.values())
-
-        fig, ax = plt.subplots(figsize=(5, 4))
+        fig, ax = plt.subplots(figsize=(20, 16))
         ax.bar(names, values)
+        ax.tick_params(axis = "x",labelcolor='black', rotation= 270, labelsize=20 )     # rota los nombres hacia abajo y agranda la letra de los valores en x
+        ax.tick_params(axis = "y", labelsize=20 , labelcolor='black'  ) #cambia el tamaño de los valores en y #agrege labelcolor='black', solo para tener en cuenta el cambio de color
+        maximo = max(values) # da el valor maximo de values
+        y_lista = list(range(0, maximo + 40, 40))# genera una lista de valores desde 0 hasta el maximo mas 30
+        y_lista.append(maximo)# a la lista y_lista le agrega el valor del maximo
+        ax.set_yticks(y_lista)#los valores que se muestran en y 
+        plt.tight_layout()      # evita que se corten
         st.pyplot(fig)
     with tab2:
         st.header("Representación")
-        st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
+        st.image("https://static.streamlit.io/examples/dog.jpg", width=1080)
     with tab3:
         st.header("Representacion")
-        st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
+        st.image("https://static.streamlit.io/examples/owl.jpg", width=1080)
 
 if __name__=="__main__":
     main()
