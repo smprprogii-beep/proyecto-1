@@ -7,40 +7,43 @@ def lista_excel(registro):
     return registro[1]
     
 
+def contar_apariciones(ciudad: str, referencia: dict[str, int]) -> None:
+    """
+    Dado el nombre de una ciudad y un diccionario de la forma:
+    key: nombre de ciudad.
+    value: número de apariciones.
+    La función incrementa en uno el entero asociado a una ciudad si la misma coincide.
+    Con la proporcionada.
+    Si esta ciudad no aparece en referencia, la misma es agregada y se le asocia un 1.
+    **MODIFICA LA REFERENCIA EN CADA LLAMADO**
+    """
+    if ciudad in referencia.keys():
+        referencia[ciudad] += 1
+    else:
+        referencia[ciudad] = 1
 
+def analizar_base_de_datos(ruta: str) -> dict[int, any]:
+    """
+    Dada la ruta del archivo CSV, la función realiza un análisis registro a registro del dataset.
+    Retorna un diccionario de la forma:
+    key (int): identificador de pregunta.
+    value (any): Datos de respuesta.
+    """
+    recuento = {}
 
-#toma lista de ciudade y las devuelve en libreria id=ciudad dato= cantidad de apariciones
-def mas_apariciones(listass):
-    dato_ciudades = {}
+    archivo_csv = open(ruta)
+    reader = csv.reader(archivo_csv)
+    reader.__next__() # Saltea la primera linea, la de los titulos.
+    for registro in reader:
+        contar_apariciones(lista_excel(registro), recuento)
+        # pregunta 2
 
-    for ciudad in listass:     #ciudad toma el valor de cada elemento de listass
-        if ciudad in dato_ciudades:   #aca pregunta si ciudad ya esta en dato_ciudades
-            dato_ciudades[ciudad] += 1 #en caso que este agrega uno al dato asignado a "ciudad"
-        else:
-            dato_ciudades[ciudad] = 1  #en caso de no estar crea la clave con el calor de ciudad y le asigna 1(por que aparecio por primera vez)
-
-    return(dato_ciudades)
-
-#mas_apariciones(lista_excel(VALOR QUE DADO DEL EXCEL))
-
-
-
+    return {1:recuento}
 
 def main():
 
-    archivo_csv = open("global_urban_smog_pm25_hourly_12k.csv")
-    reader = csv.reader(archivo_csv)
-    reader.__next__() # Saltea la primera linea, la de los titulos.
-    ciudades = [] # variable para inicializar lista
-    for registro in reader:
-        ciudades.append(lista_excel(registro)) #crea la lista de solo las ciudades
-        #pregunta2
-        #pregunta3
-        #pregunta4
-        #pregunta5
-        #pregunta6
-    var1 = mas_apariciones(ciudades)  # var1 usa la funcion mas_apariciones con la lista ciudades y 
-                                      #devuelve libreria con ciudad:apariciones
-    vistas.mostrar_vistas({1:var1})
+    data = analizar_base_de_datos("global_urban_smog_pm25_hourly_12k.csv")
+    vistas.mostrar_vistas(data)
+
 if __name__=="__main__":
     main()

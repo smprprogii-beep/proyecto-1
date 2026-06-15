@@ -29,10 +29,10 @@ def vista_pregunta_1(tab, data: dict) -> None:
 
 def mostrar_vistas(respuestas: dict) -> None:
     """
-    La función define todos los tabs que se mostraran en la vista web.
+    La función define todos los tabs que se mostrarán en la vista web.
     La misma requiere un diccionario formado por:
     key (int): Número de pregunta.
-    value (any): Los datos que deven mostrarse (Según el contrato de cada vista).
+    value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
     tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "Pregunta siguiente"])
     vista_pregunta_1(tab1, respuestas[1])
