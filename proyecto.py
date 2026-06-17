@@ -1,11 +1,9 @@
 import csv
 import vistas
 
+informe_dataset = dict[str, dict[str, any]]
 
-#toma lista defilas del excel y devuelve la de la posicion 1
-def lista_excel(registro):
-    return registro[1]
-    
+
 def test_obtener_campos():
     registro = ["2026-02-15T13:00","Mexico City",19.4326,-99.1332,25.3,25.0,271.0,4.5,184.0,0.0,9.25,70,0]
     
@@ -62,43 +60,55 @@ def obtener_campos(registro: list, campos: list) -> list:
 
     return salida
 
-def contar_apariciones(ciudad: str, referencia: dict[str, int]) -> None:
+def contar_apariciones(ciudad: str, referencia: informe_dataset) -> None:
     """
-    Dado el nombre de una ciudad y un diccionario de la forma:
-    key: nombre de ciudad.
-    value: número de apariciones.
-    La función incrementa en uno el entero asociado a una ciudad si la misma coincide.
-    Con la proporcionada.
-    Si esta ciudad no aparece en referencia, la misma es agregada y se le asocia un 1.
+    Dado el nombre de una ciudad y la referencia (un informe del dataset).
+    La función incrementa en uno el entero asociado a las apariciones de la ciudad indicada.
+    Si esta ciudad no aparece en referencia, la misma es agregada y se le asocian las apariciones a 1.
     **MODIFICA LA REFERENCIA EN CADA LLAMADO**
     """
     if ciudad in referencia.keys():
-        referencia[ciudad] += 1
+        referencia[ciudad]["n_muestras"] += 1
     else:
-        referencia[ciudad] = 1
+        referencia[ciudad] = {"n_muestras": 1}
 
-def analizar_base_de_datos(ruta: str) -> dict[int, any]:
+def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
     Dada la ruta del archivo CSV, la función realiza un análisis registro a registro del dataset.
     Retorna un diccionario de la forma:
-    key (int): identificador de pregunta.
-    value (any): Datos de respuesta.
+    key (str): Nombre de ciudad.
+    value (dict): datos asociados a la ciudad.
+    key (str): Identificador del dato.
+    value (any): dato.
+        - n_muestras
     """
-    recuento = {}
+    VALOR_UNICO = 0
+    informe = {}
 
     archivo_csv = open(ruta)
     reader = csv.reader(archivo_csv)
     reader.__next__() # Saltea la primera linea, la de los titulos.
     for registro in reader:
-        contar_apariciones(lista_excel(registro), recuento)
+        contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         # pregunta 2
 
-    return {1:recuento}
+    return informe
+
+def extraer_muestras_por_ciudad(informe: informe_dataset) -> dict[str, int]:
+    """
+    La función extrae en forma de diccionario los nombres de las ciudades y el número de mediciones.
+    Asociado a este.
+    """
+    respuesta = {}
+    for ciudad, data in informe.items():
+        respuesta[ciudad] = data["n_muestras"]
+    
+    return respuesta
 
 def main():
 
     data = analizar_base_de_datos("global_urban_smog_pm25_hourly_12k.csv")
-    vistas.mostrar_vistas(data)
+    vistas.mostrar_vistas({1: extraer_muestras_por_ciudad(data)})
 
 if __name__=="__main__":
     main()
