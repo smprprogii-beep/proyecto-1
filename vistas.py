@@ -28,6 +28,19 @@ def vista_pregunta_1(tab, data: dict) -> None:
 #        st.header("Representación")
 #        st.image("https://static.streamlit.io/examples/dog.jpg", width=1080)
 
+def vista_mapa(tab, datos_mapa):
+    """
+    Dado un objeto TabContaines y datos_mapa un diccionario con las coordenadas de 
+    las ciudades y el promedio de dioxido de carbono de esta ciudad.
+    Genera el tab correspondiente a la pregunta: ¿Cuales son las ciudades con mayor 
+    promedio de dioxido de carbono?
+    mostrando con circulos más grandes las ciudades con mayor promedio y con 
+    circulos mas chicos las ciudades con menor promedio.
+    """
+    with tab:
+        st.header("Mapa de cantidades")
+    st.map(datos_mapa)
+
 def mostrar_vistas(datos: informe_dataset) -> None:
     """
     La función define todos los tabs que se mostrarán en la vista web.
@@ -35,6 +48,7 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     key (int): Número de pregunta.
     value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
-    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "Pregunta siguiente"])
+    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     #vista_pregunta_2(tab2, None)
+    vista_mapa(tab3, datos_mapa)
