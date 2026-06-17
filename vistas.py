@@ -1,5 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+from consultas_al_informe import *
 
 def vista_pregunta_1(tab, data: dict) -> None:
     """
@@ -27,7 +28,7 @@ def vista_pregunta_1(tab, data: dict) -> None:
 #        st.header("Representación")
 #        st.image("https://static.streamlit.io/examples/dog.jpg", width=1080)
 
-def mostrar_vistas(respuestas: dict) -> None:
+def mostrar_vistas(datos: informe_dataset) -> None:
     """
     La función define todos los tabs que se mostrarán en la vista web.
     La misma requiere un diccionario formado por:
@@ -35,5 +36,5 @@ def mostrar_vistas(respuestas: dict) -> None:
     value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
     tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "Pregunta siguiente", "Pregunta siguiente"])
-    vista_pregunta_1(tab1, respuestas[1])
+    vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     #vista_pregunta_2(tab2, None)

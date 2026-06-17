@@ -1,7 +1,6 @@
 import csv
 import vistas
-
-informe_dataset = dict[str, dict[str, any]]
+from consultas_al_informe import informe_dataset
 
 
 def test_obtener_campos():
@@ -94,21 +93,11 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
 
     return informe
 
-def extraer_muestras_por_ciudad(informe: informe_dataset) -> dict[str, int]:
-    """
-    La función extrae en forma de diccionario los nombres de las ciudades y el número de mediciones.
-    Asociado a este.
-    """
-    respuesta = {}
-    for ciudad, data in informe.items():
-        respuesta[ciudad] = data["n_muestras"]
-    
-    return respuesta
 
 def main():
 
     data = analizar_base_de_datos("global_urban_smog_pm25_hourly_12k.csv")
-    vistas.mostrar_vistas({1: extraer_muestras_por_ciudad(data)})
+    vistas.mostrar_vistas(data)
 
 if __name__=="__main__":
     main()
