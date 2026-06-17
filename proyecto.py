@@ -90,8 +90,8 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
     for registro in reader:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         # pregunta 2
-
     return informe
+    
 
 
 def main():
