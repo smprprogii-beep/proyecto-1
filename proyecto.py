@@ -119,15 +119,15 @@ def incrementar_datos_de_promedio(registro: list[str, float, float, float, float
     ND = 4
 
     try:
-        informe[registro[CIUDAD]]["PM10_ug_m3"] += representar_en_milecimos(registro[PM10])
-        informe[registro[CIUDAD]]["PM2_5_ug_m3"] += representar_en_milecimos(registro[PM25])
-        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] += representar_en_milecimos(registro[CM])
-        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] += representar_en_milecimos(registro[ND])
+        informe[registro[CIUDAD]]["PM10_ug_m3"] += float(registro[PM10])
+        informe[registro[CIUDAD]]["PM2_5_ug_m3"] += float(registro[PM25])
+        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] += float(registro[CM])
+        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] += float(registro[ND])
     except KeyError:
-        informe[registro[CIUDAD]]["PM10_ug_m3"] = representar_en_milecimos(registro[PM10])
-        informe[registro[CIUDAD]]["PM2_5_ug_m3"] = representar_en_milecimos(registro[PM25])
-        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] = representar_en_milecimos(registro[CM])
-        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] = representar_en_milecimos(registro[ND])
+        informe[registro[CIUDAD]]["PM10_ug_m3"] = float(registro[PM10])
+        informe[registro[CIUDAD]]["PM2_5_ug_m3"] = float(registro[PM25])
+        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] = float(registro[CM])
+        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] = float(registro[ND])
 
 def formular_promedios(info: informe_dataset) -> None:
     """
@@ -135,10 +135,10 @@ def formular_promedios(info: informe_dataset) -> None:
     """
     for data_ciudad in info.values():
         # se usa divición parte entera para mantener el criterio de número de milecimos.
-        data_ciudad["PM10_ug_m3"] = data_ciudad["PM10_ug_m3"] % data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["PM2_5_ug_m3"] % data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["Carbon_Monoxide_ug_m3"] % data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["Nitrogen_Dioxide_ug_m3"] % data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["PM10_ug_m3"] / data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["PM2_5_ug_m3"] / data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["Carbon_Monoxide_ug_m3"] / data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["Nitrogen_Dioxide_ug_m3"] / data_ciudad["n_muestras"]
 
 
 
