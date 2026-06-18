@@ -89,13 +89,13 @@ def vista_mapa(tab, datos_mapa):
     with tab:
         st.header("Mapa de cantidades")
     st.map(data=datos_mapa,
-    latitude="lat",
-    longitude="lon",
-    color="color",
-    size="tam",
-    zoom=4,
-    width="stretch",
-    height=500)
+        latitude="lat",
+        longitude="lon",
+        color="color",
+        size="tam",
+        zoom=4,
+        width="stretch",
+        height=500)
 
 def mostrar_vistas(datos: informe_dataset) -> None:
     """
