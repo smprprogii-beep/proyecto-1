@@ -74,7 +74,7 @@ def pregunta2(tab, el_diccionario):
             tabla.set_fontsize(12)#Establece el tamaño de la fuente.
             tabla.scale(1.2,1.8)#Aumenta el tamaño de las celdas para mejorar la lectura.
 
-    st.pyplot(fig)#Muestra la figura dentro de la aplicación Streamlit.
+        st.pyplot(fig)#Muestra la figura dentro de la aplicación Streamlit.
 
 
 #def vista_mapa(tab, datos_mapa):
@@ -99,5 +99,5 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     """
     tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "MAPA", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
-    pregunta2(tab2, datos)
+    pregunta2(tab2, adaptador_temporal(datos))
     #vista_mapa(tab3, datos_mapa)

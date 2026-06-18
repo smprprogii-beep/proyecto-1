@@ -21,6 +21,7 @@ def adaptador_temporal(informe: informe_dataset) -> dict[str, dict[str, float]]:
     
     return out
 
+
 def dic_filtrado(dicc, minimo_pm25, maximo_pm25, minimo_pm10, maximo_pm10 ):
     """
     Dado un diccionario de la forma:

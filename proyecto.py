@@ -135,10 +135,10 @@ def formular_promedios(info: informe_dataset) -> None:
     """
     for data_ciudad in info.values():
         # se usa divición parte entera para mantener el criterio de número de milecimos.
-        data_ciudad["PM10_ug_m3"] = data_ciudad["PM10_ug_m3"] / data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["PM2_5_ug_m3"] / data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["Carbon_Monoxide_ug_m3"] / data_ciudad["n_muestras"]
-        data_ciudad["PM10_ug_m3"] = data_ciudad["Nitrogen_Dioxide_ug_m3"] / data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] /= data_ciudad["n_muestras"]
+        data_ciudad["PM2_5_ug_m3"] /= data_ciudad["n_muestras"]
+        data_ciudad["Carbon_Monoxide_ug_m3"] /= data_ciudad["n_muestras"]
+        data_ciudad["Nitrogen_Dioxide_ug_m3"] /= data_ciudad["n_muestras"]
 
 
 
