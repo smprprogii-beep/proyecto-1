@@ -71,6 +71,36 @@ def contar_apariciones(ciudad: str, referencia: informe_dataset) -> None:
     else:
         referencia[ciudad] = {"n_muestras": 1}
 
+def agregar_coordenadas(registro: list[str ,float, float], informe: informe_dataset) -> None:
+    """
+    Dadas las coordenadas de una ciudad, el nombre de la misma y un informe. la función agregara al informe las
+    coordenadas en le diccionario de la ciudad.
+    Los agregara:
+    {
+    "latitud": (float), "longitud", (float)
+    }
+    """
+    CIUDAD = 0
+    LATITUD = 1
+    LONGITUD = 2
+    if informe[registro[CIUDAD]]["n_muestras"] == 1:
+        informe[registro[CIUDAD]]["latitud"] = registro[LATITUD]
+        informe[registro[CIUDAD]]["longitud"] = registro[LONGITUD]
+
+def incrementar_datos_de_promedio(registro: list[str, float, float, float, float], informe: informe_dataset) -> None:
+    """
+    Dado el nombre de una ciudad y los datos "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"
+    la función ingrementa en la magnitud indicada los datos del mismo nombre.
+    """
+
+    CIUDAD = 0
+    PM10 = 1
+    PM25 = 2
+    CM = 3
+    ND = 4
+
+    informe[registro[CIUDAD]]["PM10_ug_m3"] += 
+
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
     Dada la ruta del archivo CSV, la función realiza un análisis registro a registro del dataset.
@@ -80,6 +110,8 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
     key (str): Identificador del dato.
     value (any): dato.
         - n_muestras
+        - latitud
+        - longitud
     """
     VALOR_UNICO = 0
     informe = {}
@@ -89,6 +121,8 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
     reader.__next__() # Saltea la primera linea, la de los titulos.
     for registro in reader:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
+        agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
+        incrementar_datos_de_promedio(obtener_campos(["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"], informe))
         # pregunta 2
     return informe
     
