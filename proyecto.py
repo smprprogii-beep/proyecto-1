@@ -84,8 +84,27 @@ def agregar_coordenadas(registro: list[str ,float, float], informe: informe_data
     LATITUD = 1
     LONGITUD = 2
     if informe[registro[CIUDAD]]["n_muestras"] == 1:
-        informe[registro[CIUDAD]]["latitud"] = registro[LATITUD]
-        informe[registro[CIUDAD]]["longitud"] = registro[LONGITUD]
+        informe[registro[CIUDAD]]["latitud"] = float(registro[LATITUD])
+        informe[registro[CIUDAD]]["longitud"] = float(registro[LONGITUD])
+
+def representar_en_milecimos(num: str) -> int:
+    """
+    Convierte un strig de un número con no más de 3 decimales a un numro entero
+    que representa el número de milecimos para formar dicho numero.
+    **COON DECIMALES SEPARADOS POR .**
+    ejemplo:
+    
+    >>> representar_en_milecimos("5")
+    5
+    >>> representar_en_milecimos("5.5")
+    55
+    >>> representar_en_milecimos("5.55")
+    555
+    >>> representar_en_milecimos("5.555")
+    5555
+    """
+    return int(num.replace(".", ""))
+
 
 def incrementar_datos_de_promedio(registro: list[str, float, float, float, float], informe: informe_dataset) -> None:
     """
@@ -99,7 +118,16 @@ def incrementar_datos_de_promedio(registro: list[str, float, float, float, float
     CM = 3
     ND = 4
 
-    informe[registro[CIUDAD]]["PM10_ug_m3"] += 
+    try:
+        informe[registro[CIUDAD]]["PM10_ug_m3"] += representar_en_milecimos(registro[PM10])
+        informe[registro[CIUDAD]]["PM2_5_ug_m3"] += representar_en_milecimos(registro[PM25])
+        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] += representar_en_milecimos(registro[CM])
+        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] += representar_en_milecimos(registro[ND])
+    except KeyError:
+        informe[registro[CIUDAD]]["PM10_ug_m3"] = representar_en_milecimos(registro[PM10])
+        informe[registro[CIUDAD]]["PM2_5_ug_m3"] = representar_en_milecimos(registro[PM25])
+        informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] = representar_en_milecimos(registro[CM])
+        informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] = representar_en_milecimos(registro[ND])
 
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
@@ -122,7 +150,7 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
     for registro in reader:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
-        incrementar_datos_de_promedio(obtener_campos(["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"], informe))
+        incrementar_datos_de_promedio(obtener_campos(registro, ["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"]), informe)
         # pregunta 2
     return informe
     
