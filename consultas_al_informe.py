@@ -62,3 +62,16 @@ def dic_filtrado(dicc, minimo_pm25, maximo_pm25, minimo_pm10, maximo_pm10 ):
 
     return dentro_slider#Devuelve el diccionario filtrado.
 
+def informe_a_mapa(informe: informe_dataset) -> list[dict]:
+    """
+    Convierte el informe en una lista de diccionarios compatible con st.map().
+    """
+    datos = []
+    for info in informe.values():
+        datos.append({
+            "lat": info["latitud"],
+            "lon": info["longitud"],
+            "color": [255, 0, 0], #color rojo, aunque lo cambie no cambia el color
+            "tam": 100#aunque lo cambie no cambia el tamaño
+        })
+    return datos

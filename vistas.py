@@ -76,6 +76,17 @@ def pregunta2(tab, el_diccionario):
 
         st.pyplot(fig)#Muestra la figura dentro de la aplicación Streamlit.
 
+def informe_a_mapa(informe):
+    datos = []
+    for info in informe.values():
+        datos.append({
+            "lat": info["latitud"],
+            "lon": info["longitud"],
+            "color": [255, 0, 0],
+            "tam": 100
+        })
+    return datos
+
 
 def vista_mapa(tab, datos_mapa):
     """
@@ -88,14 +99,16 @@ def vista_mapa(tab, datos_mapa):
     """
     with tab:
         st.header("Mapa de cantidades")
-    st.map(data=datos_mapa,
-        latitude="lat",
-        longitude="lon",
-        color="color",
-        size="tam",
-        zoom=4,
-        width="stretch",
-        height=500)
+        st.map(
+            data=datos_mapa,
+            latitude="lat",
+            longitude="lon",
+            color="color",
+            size="tam",
+            zoom=4,
+            width="stretch",
+            height=500
+        )
 
 def mostrar_vistas(datos: informe_dataset) -> None:
     """
@@ -104,7 +117,8 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     key (int): Número de pregunta.
     value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
-    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "MAPA", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
+    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "¿Qué ciudades tienen un rango de X de partículas de tamaño particular?", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     pregunta2(tab2, adaptador_temporal(datos))
+    datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)

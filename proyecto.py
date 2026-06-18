@@ -5,7 +5,6 @@ from consultas_al_informe import informe_dataset
 
 def test_obtener_campos():
     registro = ["2026-02-15T13:00","Mexico City",19.4326,-99.1332,25.3,25.0,271.0,4.5,184.0,0.0,9.25,70,0]
-    
     assert obtener_campos(registro, ["City", "Latitude", "Longitude"]) == ["Mexico City",19.4326,-99.1332]
     assert obtener_campos(registro, ["City", "Latitude", "Timestamp", "Longitude"]) == ["Mexico City",19.4326, "2026-02-15T13:00", -99.1332]
     assert obtener_campos(registro, ["City"]) == ["Mexico City"]
@@ -140,7 +139,16 @@ def formular_promedios(info: informe_dataset) -> None:
         data_ciudad["Carbon_Monoxide_ug_m3"] /= data_ciudad["n_muestras"]
         data_ciudad["Nitrogen_Dioxide_ug_m3"] /= data_ciudad["n_muestras"]
 
-
+def informe_a_mapa(informe):
+    datos = []
+    for info in informe.values():
+        datos.append({
+            "lat": info["latitud"],
+            "lon": info["longitud"],
+            "color": [255, 0, 0],
+            "tam": 100
+        })
+    return datos
 
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
@@ -167,11 +175,9 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         # pregunta 2
     formular_promedios(informe)
     return informe
-    
 
 
 def main():
-
     data = analizar_base_de_datos("global_urban_smog_pm25_hourly_12k.csv")
     vistas.mostrar_vistas(data)
 
