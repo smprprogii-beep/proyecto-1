@@ -129,6 +129,19 @@ def incrementar_datos_de_promedio(registro: list[str, float, float, float, float
         informe[registro[CIUDAD]]["Carbon_Monoxide_ug_m3"] = representar_en_milecimos(registro[CM])
         informe[registro[CIUDAD]]["Nitrogen_Dioxide_ug_m3"] = representar_en_milecimos(registro[ND])
 
+def formular_promedios(info: informe_dataset) -> None:
+    """
+    realiza la divión respectiva a los valores promediados.
+    """
+    for data_ciudad in info.values():
+        # se usa divición parte entera para mantener el criterio de número de milecimos.
+        data_ciudad["PM10_ug_m3"] = data_ciudad["PM10_ug_m3"] % data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["PM2_5_ug_m3"] % data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["Carbon_Monoxide_ug_m3"] % data_ciudad["n_muestras"]
+        data_ciudad["PM10_ug_m3"] = data_ciudad["Nitrogen_Dioxide_ug_m3"] % data_ciudad["n_muestras"]
+
+
+
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
     Dada la ruta del archivo CSV, la función realiza un análisis registro a registro del dataset.
@@ -152,6 +165,7 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
         incrementar_datos_de_promedio(obtener_campos(registro, ["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"]), informe)
         # pregunta 2
+    formular_promedios(informe)
     return informe
     
 
