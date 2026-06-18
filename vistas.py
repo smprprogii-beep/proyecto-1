@@ -77,18 +77,25 @@ def pregunta2(tab, el_diccionario):
         st.pyplot(fig)#Muestra la figura dentro de la aplicación Streamlit.
 
 
-#def vista_mapa(tab, datos_mapa):
-#    """
-#    Dado un objeto TabContaines y datos_mapa un diccionario con las coordenadas de 
-#    las ciudades y el promedio de dioxido de carbono de esta ciudad.
-#    Genera el tab correspondiente a la pregunta: ¿Cuales son las ciudades con mayor 
-#    promedio de dioxido de carbono?
-#    mostrando con circulos más grandes las ciudades con mayor promedio y con 
-#    circulos mas chicos las ciudades con menor promedio.
-#    """
-#    with tab:
-#        st.header("Mapa de cantidades")
-#    st.map(datos_mapa)
+def vista_mapa(tab, datos_mapa):
+    """
+    Dado un objeto TabContaines y datos_mapa una lista de diccionarios con las coordenadas de 
+    las ciudades y el color y el tamaño de los circulos.
+    Genera el tab correspondiente a la pregunta: ¿Cuales son las ciudades con mayor 
+    promedio de dioxido de carbono?
+    mostrando con circulos más grandes las ciudades con mayor promedio y con 
+    circulos mas chicos las ciudades con menor promedio.
+    """
+    with tab:
+        st.header("Mapa de cantidades")
+    st.map(data=datos_mapa,
+    latitude="lat",
+    longitude="lon",
+    color="color",
+    size="tam",
+    zoom=4,
+    width="stretch",
+    height=500)
 
 def mostrar_vistas(datos: informe_dataset) -> None:
     """
@@ -100,4 +107,4 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "MAPA", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     pregunta2(tab2, adaptador_temporal(datos))
-    #vista_mapa(tab3, datos_mapa)
+    vista_mapa(tab3, datos_mapa)
