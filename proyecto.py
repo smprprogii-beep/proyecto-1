@@ -182,6 +182,10 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         - n_muestras
         - latitud
         - longitud
+        - PM10_ug_m3
+        - PM2_5_ug_m3
+        - Carbon_Monoxide_ug_m3
+        - Nitrogen_Dioxide_ug_m3
     """
     VALOR_UNICO = 0
     informe = {}
