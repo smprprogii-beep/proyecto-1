@@ -150,6 +150,27 @@ def informe_a_mapa(informe):
         })
     return datos
 
+def obtener_fecha(fecha: str) -> tuple[int, int, int, int]:
+    """
+    Dada una string con una fecha en el formato AAAA-DD-MMTHH:MM, con estos siendo números.
+    Retorna una tupla con el número del año, mes, día y el número de minutos que transcurrieron en el día.
+    Ejemplo:
+    >>> obtener_fecha("2025-09-30T23:00")
+    (2025, 9, 30, 1380)
+    >>> obtener_fecha("2026-03-24T07:00")
+    (2026, 3, 7, 420)
+    """
+    mes = int(fecha[5:7])
+    dia = int(fecha[8:10])
+    minutos = int(fecha[11:13])*60 + int(fecha[14:])
+    return int(fecha[0:4]), mes, dia, minutos
+
+def test_obtener_fecha():
+
+    assert obtener_fecha("2025-09-30T23:00") == (2025, 9, 30, 1380)
+    assert obtener_fecha("2026-03-24T07:00") == (2026, 3, 24, 420)
+    assert obtener_fecha("0000-00-00T00:01") == (0, 0, 0, 1)
+
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
     """
     Dada la ruta del archivo CSV, la función realiza un análisis registro a registro del dataset.
