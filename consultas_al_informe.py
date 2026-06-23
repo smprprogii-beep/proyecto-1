@@ -75,3 +75,74 @@ def informe_a_mapa(informe: informe_dataset) -> list[dict]:
             "tam": 100#aunque lo cambie no cambia el tamaño
         })
     return datos
+
+
+
+def adaptador_dioxido(informe: informe_dataset) -> dict[str, float]:
+    """
+    Dado un informe completo.
+    La función construye un nuevo diccionario formado únicamente por el
+    promedio de dióxido de nitrógeno de cada ciudad.
+    
+    informe: informe_dataset
+        Informe generado luego del análisis del dataset.
+    Retorna
+
+    dict[str,float]
+        key:
+            nombre de la ciudad.
+        value:
+            promedio de dióxido de nitrógeno.
+
+    Ejemplo
+        adaptador_dioxido({
+        "Rosario":{"Nitrogen_Dioxide_ug_m3":20.5},
+        "Córdoba":{"Nitrogen_Dioxide_ug_m3":35.2}
+        })
+
+    {
+        "Rosario":20.5,
+        "Córdoba":35.2
+    }
+    """
+
+    salida = {}
+    for ciudad, datos in informe.items():
+        salida[ciudad] = datos["Nitrogen_Dioxide_ug_m3"]
+    return salida
+
+
+def ciudades_superiores_a(diccionario: dict[str,float],minimo: float):
+    """
+    Dado un diccionario cuyos valores representan el promedio de
+    dióxido de nitrógeno por ciudad.
+    La función devuelve únicamente aquellas ciudades cuyo promedio
+    sea mayor o igual al valor indicado.
+
+    diccionario:
+        key:
+            nombre de la ciudad.
+        value:
+            promedio de dióxido de nitrógeno.
+    minimo:
+        valor mínimo permitido.
+
+    Retorna
+    dict[str,float]
+
+    Ejemplo
+        ciudades_superiores_a(
+        {
+        "A":15,
+        "B":40,
+        "C":12
+        },20)
+    {
+        "B":40
+    }
+    """
+    salida = {}
+    for ciudad, promedio in diccionario.items():
+        if promedio >= minimo:
+            salida[ciudad] = promedio
+    return salida

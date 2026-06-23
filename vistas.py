@@ -27,6 +27,40 @@ def vista_pregunta_1(tab, data: dict) -> None:
 #    with tab:
 #        st.header("Representación")
 #        st.image("https://static.streamlit.io/examples/dog.jpg", width=1080)
+def mostrar_tabla(datos: list[list], columnas: list[str]) -> None:
+    """
+    Dada una lista de filas y una lista con los nombres de las columnas.
+    La función genera una figura de Matplotlib con una tabla.
+    En caso de que no existan datos para mostrar, presenta un mensaje
+    indicando que no hubo resultados.
+    datos:
+        Lista de filas que se mostrarán en la tabla.
+    columnas:
+        Lista con los nombres de las columnas.
+    Retorna
+        Figura que contiene la tabla generada.
+    """
+    fig, ax = plt.subplots(figsize=(9, 5)) #Crea una figura de Matplotlib.
+    ax.axis("off") #Oculta los ejes porque solamente se mostrará una tabla.
+    if len(datos) == 0: #Verifica si existen datos para mostrar.
+        ax.text(
+            0.5,
+            0.5,
+            "No hay datos para mostrar.",
+            ha="center",
+            va="center",
+            fontsize=15
+        ) #Muestra un mensaje en el centro de la figura.
+    else:
+        tabla = ax.table(
+            cellText=datos, #Filas de la tabla.
+            colLabels=columnas, #Encabezados de la tabla.
+            loc="center" #Ubicación dentro de la figura.
+        )
+        tabla.auto_set_font_size(False) #Desactiva el tamaño automático de la fuente.
+        tabla.set_fontsize(12) #Establece el tamaño de la fuente.
+        tabla.scale(1.2, 1.8) #Aumenta el tamaño de las celdas para mejorar la lectura.
+    return fig #Devuelve la figura generada.
 
 def pregunta2(tab, el_diccionario):
     PM25 = "PM2_5_ug_m3"
@@ -48,33 +82,15 @@ def pregunta2(tab, el_diccionario):
             step=0.5#Incremento del slider.
         )
         filtrado = dic_filtrado(el_diccionario,minimo_pm25,maximo_pm25,minimo_pm10,maximo_pm10)#Obtiene únicamente las ciudades comprendidas dentro de ambos rangos.
+        datos = [[ciudad, mediciones[PM25], mediciones[PM10]]
+         for ciudad, mediciones in filtrado.items()] #Convierte el diccionario filtrado en una lista de filas.
+        fig = mostrar_tabla(
+            datos,
+            ["Ciudad", "Promedio PM2.5", "Promedio PM10"]
+        ) #Genera una figura con la tabla correspondiente.
+        st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
 
-        fig,ax = plt.subplots(figsize=(9,5))#Crea una figura de Matplotlib.
-        ax.axis("off")#Oculta los ejes porque solamente se mostrará una tabla.
 
-        datos = [[ciudad,mediciones[PM25],mediciones[PM10]] for ciudad,mediciones in filtrado.items()]#Convierte el diccionario filtrado en una lista de filas.
-
-        if len(datos) == 0:#Verifica si existen ciudades dentro del rango.
-            ax.text(
-                0.5,
-                0.5,
-                "No hay ciudades en ese rango",
-                ha="center",
-                va="center",
-                fontsize=15
-            )#Muestra un mensaje en el centro de la figura.
-        else:
-            tabla = ax.table(
-                cellText=datos,#Filas de la tabla.
-                colLabels=["Ciudad","Promedio PM2.5","Promedio PM10"],#Encabezados.
-                loc="center"#Ubicación dentro de la figura.
-            )
-
-            tabla.auto_set_font_size(False)#Desactiva el tamaño automático de la fuente.
-            tabla.set_fontsize(12)#Establece el tamaño de la fuente.
-            tabla.scale(1.2,1.8)#Aumenta el tamaño de las celdas para mejorar la lectura.
-
-        st.pyplot(fig)#Muestra la figura dentro de la aplicación Streamlit.
 
 def informe_a_mapa(informe):
     datos = []
@@ -110,6 +126,44 @@ def vista_mapa(tab, datos_mapa):
             height=500
         )
 
+def pregunta4(tab, datos):
+    """
+    Dado un TabContainer y un diccionario con los promedios de dióxido de nitrógeno
+    por ciudad.
+    La función genera una tabla con las ciudades cuyo promedio de dióxido de
+    nitrógeno es mayor o igual al valor seleccionado mediante un slider.
+    tab:
+        Pestaña donde se mostrará la vista.
+    datos:
+        Diccionario cuya clave es el nombre de la ciudad y cuyo valor es el
+        promedio de dióxido de nitrógeno.
+    """
+    with tab:
+        st.header("Ciudades con promedio de dióxido de nitrógeno superior a X") #Agrega el título principal de la aplicación.
+        valor = st.slider(
+            "Seleccione el promedio mínimo", #Texto mostrado sobre el slider.
+            min_value=0.0, #Valor mínimo permitido.
+            max_value=100.0, #Valor máximo permitido.
+            value=0.0, #Valor inicial del slider.
+            step=0.5 #Incremento del slider.
+        )
+        filtrado = ciudades_superiores_a(datos, valor) #Obtiene únicamente las ciudades cuyo promedio supera el valor seleccionado.
+        datos_tabla = [] #Lista donde se almacenarán las filas de la tabla.
+        for ciudad, promedio in filtrado.items(): #Recorre todas las ciudades filtradas.
+            datos_tabla.append([ciudad, promedio]) #Agrega una fila con la ciudad y su promedio.
+        fig = mostrar_tabla(
+            datos_tabla,
+            ["Ciudad", "Promedio NO₂"]
+        ) #Genera la figura con la tabla.
+        st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
+
+
+
+
+
+
+
+
 def mostrar_vistas(datos: informe_dataset) -> None:
     """
     La función define todos los tabs que se mostrarán en la vista web.
@@ -117,8 +171,13 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     key (int): Número de pregunta.
     value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
-    tab1, tab2, tab3 = st.tabs(["¿En qué ciudades se hicieron más mediciones?", "¿Qué ciudades tienen un rango de X de partículas de tamaño particular?", "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?"])
+    tab1, tab2, tab3, tab4 = st.tabs([
+                                        "¿En qué ciudades se hicieron más mediciones?",
+                                        "¿Qué ciudades tienen un rango de X de partículas de tamaño particular?",
+                                        "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?",
+                                        "¿Qué ciudades tienen un promedio de dióxido de nitrógeno superior a X?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     pregunta2(tab2, adaptador_temporal(datos))
     datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)
+    pregunta4(tab4, adaptador_dioxido(datos))
