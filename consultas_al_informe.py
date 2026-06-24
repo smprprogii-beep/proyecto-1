@@ -146,3 +146,24 @@ def ciudades_superiores_a(diccionario: dict[str,float],minimo: float):
         if promedio >= minimo:
             salida[ciudad] = promedio
     return salida
+
+
+    def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
+        # dada la nueva estructura dicc de la forma 
+        # key: <ciudad>
+        # value: {"n_ciudades": <int>,
+        #         "datos_historicos": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
+        # y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
+        # necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
+        fechas = []
+        valores_aqi = []
+
+        for ciudad in estructura:  #creo que puedo hacerlo con while y seria mejor
+            if ciudad == ciudad_ingresada:
+                datos = estructura[ciudad_ingresada]["datos historicos"]
+        for i in datos:
+            fecha = i[0]
+            fechas = fechas + fecha
+            aqi = i[2]
+            valores_aqi = valores_aqi + aqi
+        return (fechas, valores_aqi)

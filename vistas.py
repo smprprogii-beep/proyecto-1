@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 import matplotlib.pyplot as plt
 from consultas_al_informe import *
 
@@ -157,9 +158,44 @@ def pregunta4(tab, datos):
         ) #Genera la figura con la tabla.
         st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
 
+def pregunta5(tab, data:tuple):
+    """
+    Dado un TabContainer y una tupla con las listas que necesitamos para graficar,
+    la función genera un grafico con las mediciones realizadas en una ciudad seleccionada y sus respectivos
+    valores de AQI a lo largo del tiempo
+    """
+    with tab:
+        st.header("Cambios que presenta la cuidad X a lo largo del tiempo en los valores de European AQI") #Agrega el título principal de la aplicación.
+        option = st.selectbox(
+                ("Bangkok", "Beijing", "Bogota", "Buenos Aires", "Cairo", "Chicago", "Delhi", "Dhaka", 
+                "Dubai", "Istanbul", "Jakarta", "Johannesburg", "Karachi", "Lagos", "Lahore", "Lima", 
+                "London", "Los Angeles", "Mexico City", "Moscow", "Mumbai", "Nex York", "Paris", "Riyadh", 
+                "Sao Paulo", "Seoul", "Shanghai", "Tehran", "Tokyo"),
+                index=None,
+                placeholder="Seleccione la ciudad deseada",
+        )                                                                                                  #Ingreso de ciudad por medio del menu desplegable
+        st.write("Ciudad seleccionada:", option)
+        #st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
 
+        fechas = data[0] #datos para el eje x
+        valores_aqi = data[1] #datos para el eje y
 
+        fig, ax = plt.subplots(figsize=(12, 4)) #crea el lienzo
 
+        ax.stem(fechas, valores_aqi) #para dibujar el gráfico ax.stem recibe primero las X (fechas) y después las Y (AQI)
+
+        #ax.set_title("¿Qué cambios en los valores de European AQI presenta la ciudad X?", fontsize=12)
+        ax.set_xlabel("Fecha (con horario)")
+        ax.set_ylabel("Valores de European AQI")
+
+        # Ajustamos los límites de Y para que empiece en 0 y llegue al max valor de la escala
+        #ax.set_ylim(0, max) 
+
+        plt.xticks(rotation=30) #rotam las etiquetas del eje X para que no se pisen entre si
+
+        plt.tight_layout() #hace que el gráfico no se corte en los bordes
+
+        plt.show() #muestra el grafico
 
 
 
