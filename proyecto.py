@@ -2,6 +2,8 @@ import csv
 import vistas
 from consultas_al_informe import informe_dataset
 
+fecha = tuple[int, int, int, int]
+datos_historico = tuple[fecha, int, int]
 
 
 def obtener_campos(registro: list, campos: list) -> list:
@@ -145,7 +147,7 @@ def informe_a_mapa(informe):
         })
     return datos
 
-def obtener_fecha(fecha: str) -> tuple[int, int, int, int]:
+def obtener_fecha(fecha: str) -> fecha:
     """
     Dada una string con una fecha en el formato AAAA-DD-MMTHH:MM, con estos siendo números.
     Retorna una tupla con el número del año, mes, día y el número de minutos que transcurrieron en el día.
@@ -159,6 +161,71 @@ def obtener_fecha(fecha: str) -> tuple[int, int, int, int]:
     dia = int(fecha[8:10])
     minutos = int(fecha[11:13])*60 + int(fecha[14:])
     return int(fecha[0:4]), mes, dia, minutos
+
+def carga_ordenada(fecha: fecha, aqi: int, eventos: int, historial: list[datos_historico], n_elementos_historial: int) -> list[datos_historico]:
+    """
+    La función carga_ordenada espera la fecha, valor aqi, valor, eventos, el historial y
+    el numero de registros hasta el momento.
+    La función agrega al historial los datos historicos manteniendo el orden por por fecha.
+
+    Ejemplo:
+    >>> historial = []
+    >>> carga_ordenada((2025, 9, 30, 1380), 5, 0, historial)
+    [((2025, 9, 30, 1380), 5, 0)]
+    >>> carga_ordenada((2026, 3, 7, 420), 2, 1, historial)
+    [((2025, 9, 30, 1380), 5, 0), ((2026, 3, 7, 420), 2, 1)]
+    >>> carga_ordenada((2025 ,10 ,1 ,1 ), 1, 1, historial)
+    [((2025, 9, 30, 1380), 5, 0), ((2025 ,10 ,1 ,1 ), 1, 1), ((2026, 3, 7, 420), 2, 1)]
+    """
+    no_ubicado = True
+    i = 0
+    if historial == []: historial.append((fecha, aqi, eventos))
+    else:
+        while i < n_elementos_historial and historial[i][0] <= fecha:
+            i += 1
+        historial.insert(i, (fecha, aqi, eventos))
+    
+    return historial
+
+    
+
+
+def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe_dataset) -> None:
+    """
+    Dado un registros con Nombre de la ciudad, Timestamp, European_AQI y Hazardous_Event, junto con el informe
+    la funcíon completa el campo "Datos_cronologicos" de la ciudad indicada. Con una lista ordenada por fecha 
+    formada por tuplas (ternas) formadas por Timestamp, European_AQI y Hazardous_Event
+    
+    Ejemplo:
+    >>> informe = {"Mexico City": ... }
+    >>> cargar_datos_temporales(registro: list[str, str, str], ["Mexico City", "2025-09-30T23:00", "5", "0"])
+    >>> informe
+    {
+    "Mexico City": 
+        ... 
+        datos_temporales: [((2025, 9, 30, 1380), 5, 0)],
+        ...
+    }
+    >>> cargar_datos_temporales(registro: list[str, str, str], ["2026-03-24T07:00", "2", "1"])
+    {
+    "Mexico City": 
+        ... 
+        datos_temporales: [((2025, 9, 30, 1380), 5, 0), ((2026, 3, 7, 420), 2, 1)],
+        ...
+    }
+    """
+    NOMBRE = 0
+    FECHA = 1
+    R_AQI = 2
+    EV = 3
+    fecha_registro = obtener_fecha(registro[FECHA])
+    aqi = int(registro[R_AQI])
+    ev = int(registro[EV])
+    ciudad = registro[NOMBRE]
+    if informe[ciudad]["n_muestras"] == 0: informe[ciudad]["datos_temporales"] = []
+    carga_ordenada(fecha_registro, aqi, ev, informe[ciudad]["datos_temporales"], informe[ciudad]["n_muestras"]-1)
+
+
 
 
 def analizar_base_de_datos(ruta: str) -> informe_dataset:
@@ -187,7 +254,7 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
         incrementar_datos_de_promedio(obtener_campos(registro, ["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"]), informe)
-        # pregunta 2
+        cargar_datos_temporales(obtener_campos(registro, ["City", "Timestamp", "European_AQI", "Hazardous_Event"]),informe)
     formular_promedios(informe)
     return informe
 
