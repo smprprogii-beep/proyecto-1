@@ -198,7 +198,7 @@ def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe
     
     Ejemplo:
     >>> informe = {"Mexico City": ... }
-    >>> cargar_datos_temporales(registro: list[str, str, str], ["Mexico City", "2025-09-30T23:00", "5", "0"])
+    >>> cargar_datos_temporales(["Mexico City", "2025-09-30T23:00", "5", "0"], informe)
     >>> informe
     {
     "Mexico City": 
@@ -206,11 +206,11 @@ def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe
         datos_temporales: [((2025, 9, 30, 1380), 5, 0)],
         ...
     }
-    >>> cargar_datos_temporales(registro: list[str, str, str], ["2026-03-24T07:00", "2", "1"])
+    >>> cargar_datos_temporales(["Mexico City", "2026-03-24T07:00", "2", "1"], informe)
     {
     "Mexico City": 
         ... 
-        datos_temporales: [((2025, 9, 30, 1380), 5, 0), ((2026, 3, 7, 420), 2, 1)],
+        datos_temporales: [((2025, 9, 30, 1380), 5, 0), ((2026, 3, 24, 420), 2, 1)],
         ...
     }
     """
@@ -222,7 +222,11 @@ def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe
     aqi = int(registro[R_AQI])
     ev = int(registro[EV])
     ciudad = registro[NOMBRE]
-    if informe[ciudad]["n_muestras"] == 0: informe[ciudad]["datos_temporales"] = []
+
+    if not("datos_temporales" in informe[ciudad]):
+        # Agregamos el parametro si este no se encuentra en la estructura.
+        informe[ciudad]["datos_temporales"] = []
+    # Agregamos en cada ocación los datos
     carga_ordenada(fecha_registro, aqi, ev, informe[ciudad]["datos_temporales"], informe[ciudad]["n_muestras"]-1)
 
 
@@ -254,9 +258,7 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
         incrementar_datos_de_promedio(obtener_campos(registro, ["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"]), informe)
-        print (informe)
         cargar_datos_temporales(obtener_campos(registro, ["City", "Timestamp", "European_AQI", "Hazardous_Event"]),informe)
-        print (informe)
     formular_promedios(informe)
     return informe
 

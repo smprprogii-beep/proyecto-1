@@ -1,4 +1,4 @@
-from proyecto import obtener_fecha, obtener_campos
+from proyecto import obtener_fecha, obtener_campos, carga_ordenada
 from consultas_al_informe import adaptador_dioxido, ciudades_superiores_a
 
 def test_obtener_fecha():
@@ -65,3 +65,13 @@ def test_ciudades_superiores_a():
         "Santa Fe": 30.1
     }
     assert ciudades_superiores_a(datos, 30) == esperado
+
+def test_carga_ordenada():
+    historial = []
+
+    assert carga_ordenada((2025, 9, 30, 1380), 5, 0, historial, 0) == [((2025, 9, 30, 1380), 5, 0)]
+    assert carga_ordenada((2026, 3, 7, 420), 2, 1, historial, 1) == [((2025, 9, 30, 1380), 5, 0), ((2026, 3, 7, 420), 2, 1)]
+    assert carga_ordenada((2025, 10, 1, 1), 1, 1, historial, 2) == [((2025, 9, 30, 1380), 5, 0), ((2025, 10, 1, 1), 1, 1), ((2026, 3, 7, 420), 2, 1)]
+    assert carga_ordenada((0, 0, 0, 1), 0, 0, historial, 2) == [((0, 0, 0, 1), 0, 0),((2025, 9, 30, 1380), 5, 0), ((2025, 10, 1, 1), 1, 1), ((2026, 3, 7, 420), 2, 1)]
+    assert carga_ordenada((0, 0, 2, 1), 0, 0, historial, 2) == [((0, 0, 0, 1), 0, 0), ((0, 0, 2, 1), 0, 0),((2025, 9, 30, 1380), 5, 0), ((2025, 10, 1, 1), 1, 1), ((2026, 3, 7, 420), 2, 1)]
+    assert carga_ordenada((2025, 0, 2, 1), 0, 0, historial, 2) == [((0, 0, 0, 1), 0, 0), ((0, 0, 2, 1), 0, 0),((2025, 0, 2, 1), 0, 0),((2025, 9, 30, 1380), 5, 0), ((2025, 10, 1, 1), 1, 1), ((2026, 3, 7, 420), 2, 1)]
