@@ -147,23 +147,35 @@ def ciudades_superiores_a(diccionario: dict[str,float],minimo: float):
             salida[ciudad] = promedio
     return salida
 
+def agrupar_por_meses(data: informe_dataset) -> list[int]:
+    """
+    Dado un informe la función retornara la sumatoria de los Hazardous_Event por cada mes.
+    """
+    MES = 1
+    recuento = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for datos_ciudad in data.values():
+        datos_temporales = datos_ciudad["datos_temporales"]
+        for fecha, aqi, ev in datos_temporales:
+            recuento[fecha[MES]-1]+=ev
 
-    def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
-        # dada la nueva estructura dicc de la forma 
-        # key: <ciudad>
-        # value: {"n_ciudades": <int>,
-        #         "datos_temporales": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
-        # y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
-        # necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
-        fechas = []
-        valores_aqi = []
+    return recuento
 
-        for ciudad in estructura:
-            if ciudad == ciudad_ingresada:
-                datos = estructura[ciudad_ingresada]["datos_temporales"]
-        for i in datos:
-            fecha = i[0]
-            fechas = fechas + fecha
-            aqi = i[2]
-            valores_aqi = valores_aqi + aqi
-        return (fechas, valores_aqi)
+
+def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
+    # dada la nueva estructura dicc de la forma 
+    # key: <ciudad>
+    # value: {"n_ciudades": <int>,
+    #         "datos_temporales": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
+    # y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
+    # necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
+    fechas = []
+    valores_aqi = []
+    for ciudad in estructura:
+        if ciudad == ciudad_ingresada:
+            datos = estructura[ciudad_ingresada]["datos_temporales"]
+    for i in datos:
+        fecha = i[0]
+        fechas = fechas + fecha
+        aqi = i[2]
+        valores_aqi = valores_aqi + aqi
+    return (fechas, valores_aqi)
