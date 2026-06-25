@@ -158,7 +158,7 @@ def pregunta4(tab, datos):
         ) #Genera la figura con la tabla.
         st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
 
-def pregunta5(tab, data:tuple):
+def pregunta5(tab, datos):
     """
     Dado un TabContainer y una tupla con las listas que necesitamos para graficar,
     la función genera un grafico con las mediciones realizadas en una ciudad seleccionada y sus respectivos
@@ -175,10 +175,10 @@ def pregunta5(tab, data:tuple):
                 placeholder="Seleccione la ciudad deseada",
         )                                                                                                  #Ingreso de ciudad por medio del menu desplegable
         st.write("Ciudad seleccionada:", option)
-        #st.pyplot(fig) #Muestra la figura dentro de la aplicación Streamlit.
-
-        fechas = data[0] #datos para el eje x
-        valores_aqi = data[1] #datos para el eje y
+        
+        consulta_a_datos = adaptador_fecha_y_aqi(datos, option) #tupla con los datos fecha y valor aqi
+        fechas = consulta_a_datos[0] #datos para el eje x
+        valores_aqi = consulta_a_datos[1] #datos para el eje y
 
         fig, ax = plt.subplots(figsize=(12, 4)) #crea el lienzo
 
@@ -228,5 +228,5 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)
     pregunta4(tab4, adaptador_dioxido(datos))
-    #pregunta5(tab5, adaptador_fecha_y_aqi(datos, option))
+    pregunta5(tab5, adaptador_fecha_y_aqi(datos, option))
     pregunta6(tab6, agrupar_por_meses(datos))

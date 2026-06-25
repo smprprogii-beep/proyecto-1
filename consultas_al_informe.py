@@ -162,12 +162,14 @@ def agrupar_por_meses(data: informe_dataset) -> list[int]:
 
 
 def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
-    # dada la nueva estructura dicc de la forma 
-    # key: <ciudad>
-    # value: {"n_ciudades": <int>,
-    #         "datos_temporales": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
-    # y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
-    # necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
+    """
+    Dada la estructuda dicc de la forma
+    key: <ciudad>
+    value: {"n_ciudades": <int>,
+            "datos_temporales": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
+    y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
+    necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
+    """
     fechas = []
     valores_aqi = []
     for ciudad in estructura:
