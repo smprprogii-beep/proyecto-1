@@ -207,13 +207,15 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     key (int): Número de pregunta.
     value (any): Los datos que deben mostrarse (según el contrato de cada vista).
     """
-    tab1, tab2, tab3, tab4 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
                                         "¿En qué ciudades se hicieron más mediciones?",
                                         "¿Qué ciudades tienen un rango de X de partículas de tamaño particular?",
                                         "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?",
-                                        "¿Qué ciudades tienen un promedio de dióxido de nitrógeno superior a X?"])
+                                        "¿Qué ciudades tienen un promedio de dióxido de nitrógeno superior a X?",
+                                        "¿Qué cambios en los valores de European AQI presenta a lo largo del tiempo la ciudad X?"])
     vista_pregunta_1(tab1, extraer_muestras_por_ciudad(datos))
     pregunta2(tab2, adaptador_temporal(datos))
     datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)
     pregunta4(tab4, adaptador_dioxido(datos))
+    pregunta5(tab5, adaptador_fecha_y_aqi(estructura, option))

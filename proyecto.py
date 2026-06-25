@@ -254,7 +254,9 @@ def analizar_base_de_datos(ruta: str) -> informe_dataset:
         contar_apariciones(obtener_campos(registro, ["City"])[VALOR_UNICO], informe)
         agregar_coordenadas(obtener_campos(registro, ["City", "Latitude", "Longitude"]), informe)
         incrementar_datos_de_promedio(obtener_campos(registro, ["City", "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"]), informe)
+        print (informe)
         cargar_datos_temporales(obtener_campos(registro, ["City", "Timestamp", "European_AQI", "Hazardous_Event"]),informe)
+        print (informe)
     formular_promedios(informe)
     return informe
 
