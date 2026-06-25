@@ -1,4 +1,6 @@
 informe_dataset = dict[str, dict[str, any]]
+fecha = tuple[int, int, int, int]
+datos_historico = tuple[fecha, int, int]
 
 def extraer_muestras_por_ciudad(informe: informe_dataset) -> dict[str, int]:
     """
@@ -161,7 +163,7 @@ def agrupar_por_meses(data: informe_dataset) -> list[int]:
     return recuento
 
 
-def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
+def adaptador_fecha_y_aqi(informe: informe_dataset, ciudad_ingresada: str) -> tuple[list[fecha], list[int]]:
     """
     Dada la estructuda dicc de la forma
     key: <ciudad>
@@ -170,14 +172,15 @@ def adaptador_fecha_y_aqi(estructura, ciudad_ingresada):
     y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
     necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
     """
+    FECHA = 0
+    AQI = 1
     fechas = []
     valores_aqi = []
-    for ciudad in estructura:
-        if ciudad == ciudad_ingresada:
-            datos = estructura[ciudad_ingresada]["datos_temporales"]
-    for i in datos:
-        fecha = i[0]
-        fechas = fechas + fecha
-        aqi = i[2]
-        valores_aqi = valores_aqi + aqi
-    return (fechas, valores_aqi)
+
+    datos_historicos = informe[ciudad_ingresada]["datos_temporales"] #me da los datos historicos de la ciudad
+
+    for dato_historico in datos_historicos:
+        fechas.append(str(dato_historico[FECHA]))
+        valores_aqi.append(dato_historico[AQI])
+        
+    return fechas, valores_aqi

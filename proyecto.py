@@ -1,9 +1,8 @@
 import csv
 import vistas
-from consultas_al_informe import informe_dataset
+from consultas_al_informe import informe_dataset, datos_historico, fecha
 
-fecha = tuple[int, int, int, int]
-datos_historico = tuple[fecha, int, int]
+
 
 
 def obtener_campos(registro: list, campos: list) -> list:

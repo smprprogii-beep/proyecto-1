@@ -160,42 +160,35 @@ def pregunta4(tab, datos):
 
 def pregunta5(tab, datos):
     """
-    Dado un TabContainer y una tupla con las listas que necesitamos para graficar,
+    Dado un TabContainer y la estructura informe,
     la función genera un grafico con las mediciones realizadas en una ciudad seleccionada y sus respectivos
     valores de AQI a lo largo del tiempo
     """
     with tab:
         st.header("Cambios que presenta la cuidad X a lo largo del tiempo en los valores de European AQI") #Agrega el título principal de la aplicación.
-        option = st.selectbox(
-                ("Bangkok", "Beijing", "Bogota", "Buenos Aires", "Cairo", "Chicago", "Delhi", "Dhaka", 
-                "Dubai", "Istanbul", "Jakarta", "Johannesburg", "Karachi", "Lagos", "Lahore", "Lima", 
-                "London", "Los Angeles", "Mexico City", "Moscow", "Mumbai", "Nex York", "Paris", "Riyadh", 
-                "Sao Paulo", "Seoul", "Shanghai", "Tehran", "Tokyo"),
-                index=None,
-                placeholder="Seleccione la ciudad deseada",
-        )                                                                                                  #Ingreso de ciudad por medio del menu desplegable
-        st.write("Ciudad seleccionada:", option)
+
+        opcion = st.selectbox(                  #opcion := None/ str
+        "",
+        datos.keys(), #ciudades
+        index=None,
+        placeholder="Seleccione ciudad...",
+        )
+        if (opcion == None):
+            opcion="Mexico City" #valor por defecto
+
+        fecha, valor_aqi = adaptador_fecha_y_aqi(datos, opcion) #extrae las listas necesarias para graficar
+        fig, ax = plt.subplots()
+
+        ax.set_xlabel("fecha")
+        ax.set_ylabel("AQI")
+
+        ax.stem(fecha,valor_aqi)
         
-        consulta_a_datos = adaptador_fecha_y_aqi(datos, option) #tupla con los datos fecha y valor aqi
-        fechas = consulta_a_datos[0] #datos para el eje x
-        valores_aqi = consulta_a_datos[1] #datos para el eje y
-
-        fig, ax = plt.subplots(figsize=(12, 4)) #crea el lienzo
-
-        ax.stem(fechas, valores_aqi) #para dibujar el gráfico ax.stem recibe primero las X (fechas) y después las Y (AQI)
-
-        #ax.set_title("¿Qué cambios en los valores de European AQI presenta la ciudad X?", fontsize=12)
-        ax.set_xlabel("Fecha (con horario)")
-        ax.set_ylabel("Valores de European AQI")
-
-        # Ajustamos los límites de Y para que empiece en 0 y llegue al max valor de la escala
-        #ax.set_ylim(0, max) 
-
-        plt.xticks(rotation=30) #rotam las etiquetas del eje X para que no se pisen entre si
-
-        plt.tight_layout() #hace que el gráfico no se corte en los bordes
-
-        plt.show() #muestra el grafico
+        st.pyplot(fig)
+        st.write("Opción seleccionada:", opcion)
+        #falta acomodar detalles del grafico para que los datos se vean bien
+    
+    
 
 def pregunta6(tab, data:list):
     """
@@ -228,5 +221,5 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)
     pregunta4(tab4, adaptador_dioxido(datos))
-    pregunta5(tab5, adaptador_fecha_y_aqi(datos, option))
+    pregunta5(tab5, datos)
     pregunta6(tab6, agrupar_por_meses(datos))
