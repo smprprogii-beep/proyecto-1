@@ -218,4 +218,4 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     datos_mapa = informe_a_mapa(datos)
     vista_mapa(tab3, datos_mapa)
     pregunta4(tab4, adaptador_dioxido(datos))
-    pregunta5(tab5, adaptador_fecha_y_aqi(estructura, option))
+    pregunta5(tab5, adaptador_fecha_y_aqi(informe, option))

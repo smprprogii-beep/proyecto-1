@@ -158,7 +158,7 @@ def ciudades_superiores_a(diccionario: dict[str,float],minimo: float):
         fechas = []
         valores_aqi = []
 
-        for ciudad in estructura:  #creo que puedo hacerlo con while y seria mejor
+        for ciudad in estructura:
             if ciudad == ciudad_ingresada:
                 datos = estructura[ciudad_ingresada]["datos_temporales"]
         for i in datos:
