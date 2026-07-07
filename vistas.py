@@ -212,7 +212,7 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
                                         "¿En qué ciudades se hicieron más mediciones?",
                                         "¿Qué ciudades tienen un rango de X de partículas de tamaño particular?",
-                                        "¿Cuales son las ciudades con mayor promedio de dioxido de carbono?",
+                                        "¿Cuales son las ciudades con mayor promedio de monoxido de carbono?",
                                         "¿Qué ciudades tienen un promedio de dióxido de nitrógeno superior a X?",
                                         "¿Qué cambios en los valores de European AQI presenta a lo largo del tiempo la ciudad X?",
                                         "¿Cuáles son los meses que presentan mayor cantidad de eventos peligrosos?"])
