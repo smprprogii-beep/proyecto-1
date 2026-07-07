@@ -1,3 +1,4 @@
+from random import randint
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -100,7 +101,7 @@ def informe_a_mapa(informe):
             "lat": info["latitud"],
             "lon": info["longitud"],
             "color": [255, 0, 0],
-            "tam": 100
+            "tam": 250*int(info["Carbon_Monoxide_ug_m3"])
         })
     return datos
 

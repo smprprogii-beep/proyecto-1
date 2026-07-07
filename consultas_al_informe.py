@@ -163,6 +163,7 @@ def agrupar_por_meses(data: informe_dataset) -> list[int]:
     return recuento
 
 
+
 def adaptador_fecha_y_aqi(informe: informe_dataset, ciudad_ingresada: str) -> tuple[list[fecha], list[int]]:
     """
     Dada la estructuda dicc de la forma
