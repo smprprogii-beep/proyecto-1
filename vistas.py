@@ -18,9 +18,9 @@ def vista_pregunta_1(tab, data: dict) -> None:
         ax.bar(names, values)
         ax.tick_params(axis = "x",labelcolor='black', rotation= 270, labelsize=20 )     # rota los nombres hacia abajo y agranda la letra de los valores en x
         ax.tick_params(axis = "y", labelsize=20 , labelcolor='black'  ) #cambia el tamaño de los valores en y #agrege labelcolor='black', solo para tener en cuenta el cambio de color
-        maximo = max(values) # da el valor maximo de values
-        y_lista = list(range(0, maximo + 40, 40))# genera una lista de valores desde 0 hasta el maximo mas 30
-        y_lista.append(maximo)# a la lista y_lista le agrega el valor del maximo
+        maximo = max(values) # da el valor máximo de values
+        y_lista = list(range(0, maximo + 40, 40))# genera una lista de valores desde 0 hasta el máximo mas 30
+        y_lista.append(maximo)# a la lista y_lista le agrega el valor del máximo
         ax.set_yticks(y_lista)#los valores que se muestran en y 
         plt.tight_layout()      # evita que se corten
         st.pyplot(fig)
@@ -109,7 +109,7 @@ def informe_a_mapa(informe):
 def vista_mapa(tab, datos_mapa):
     """
     Dado un objeto TabContaines y datos_mapa una lista de diccionarios con las coordenadas de 
-    las ciudades y el color y el tamaño de los circulos.
+    las ciudades, el color y el tamaño de los circulos.
     Genera el tab correspondiente a la pregunta: ¿Cuales son las ciudades con mayor 
     promedio de dioxido de carbono?
     mostrando con circulos más grandes las ciudades con mayor promedio y con 
@@ -162,11 +162,12 @@ def pregunta4(tab, datos):
 def pregunta5(tab, datos):
     """
     Dado un TabContainer y la estructura informe,
-    la función genera un grafico con las mediciones realizadas en una ciudad seleccionada y sus respectivos
-    valores de AQI a lo largo del tiempo
+    la función genera un grafico de a 15 mediciones realizadas en una ciudad seleccionada y sus respectivos
+    valores de AQI
     """
     with tab:
-        st.header("Cambios que presenta la cuidad X a lo largo del tiempo en los valores de European AQI") #Agrega el título principal de la aplicación.
+        st.header("Cambios que presenta la cuidad X a lo largo del tiempo en los valores de European AQI") 
+        #Agrega el título principal de la aplicación.
 
         opcion = st.selectbox(                  #opcion := None/ str
         "",
@@ -177,17 +178,18 @@ def pregunta5(tab, datos):
         if (opcion == None):
             opcion="Mexico City" #valor por defecto
 
-        fecha, valor_aqi = adaptador_fecha_y_aqi(datos, opcion) #extrae las listas necesarias para graficar
+        fechas_seleccionadas, valores_aqi_seleccionados = adaptador_fecha_y_aqi(datos, opcion) 
+        #extrae las listas necesarias para graficar
         fig, ax = plt.subplots()
 
         ax.set_xlabel("fecha")
         ax.set_ylabel("AQI")
 
-        ax.stem(fecha,valor_aqi)
+        ax.stem(fechas_seleccionadas,valores_aqi_seleccionados)
         
+        plt.xticks(rotation=90) #rota las fechas del eje X para que no se pisen entre si
         st.pyplot(fig)
         st.write("Opción seleccionada:", opcion)
-        #falta acomodar detalles del grafico para que los datos se vean bien
     
     
 

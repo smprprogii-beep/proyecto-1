@@ -178,10 +178,13 @@ def adaptador_fecha_y_aqi(informe: informe_dataset, ciudad_ingresada: str) -> tu
     fechas = []
     valores_aqi = []
 
-    datos_historicos = informe[ciudad_ingresada]["datos_temporales"] #me da los datos historicos de la ciudad
+    datos_historicos = informe[ciudad_ingresada]["datos_temporales"] #nos da los datos historicos de la ciudad
 
     for dato_historico in datos_historicos:
         fechas.append(str(dato_historico[FECHA]))
         valores_aqi.append(dato_historico[AQI])
+
+    fechas_seleccionadas = fechas[::15] #seleccionamos de a 15 fechas
+    valores_aqi_seleccionados = valores_aqi[::15] #seleccionamos de a 15 valores
         
-    return fechas, valores_aqi
+    return fechas_seleccionadas, valores_aqi_seleccionados
