@@ -15,7 +15,7 @@ def extraer_muestras_por_ciudad(informe: informe_dataset) -> dict[str, int]:
 
 def adaptador_temporal(informe: informe_dataset) -> dict[str, dict[str, float]]:
     """
-    Extra los datos del infome de manera conveniente para dic_filtrado
+    Extrae los datos del infome de manera conveniente para dic_filtrado
     """
     out = {}
     for k, v in informe.items():
@@ -178,12 +178,12 @@ def promedio_de_eventos_por_mes(data: informe_dataset) -> list[int]:
 
 def adaptador_fecha_y_aqi(informe: informe_dataset, ciudad_ingresada: str) -> tuple[list[fecha], list[int]]:
     """
-    Dada la estructuda dicc de la forma
+    Dada la estructura dicc de la forma
     key: <ciudad>
     value: {"n_ciudades": <int>,
             "datos_temporales": [((fecha), aqi, ev), ((fecha), aqi, ev), ...]
-    y dada la ciudad elegida por el usuario la funcion retorna las listas: fechas y valores_aqi que se 
-    necesitan para construir el gráfico correspondiente a la pregunta5 en forma de tupla
+    y dada la ciudad elegida por el usuario la función retorna las listas: fechas y valores_aqi que se 
+    necesitan para construir el gráfico correspondiente a la pregunta5
     """
     FECHA = 0
     AQI = 1

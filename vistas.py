@@ -25,10 +25,7 @@ def vista_pregunta_1(tab, data: dict) -> None:
         plt.tight_layout()      # evita que se corten
         st.pyplot(fig)
 
-#def vista_pregunta_2(tab, data):
-#    with tab:
-#        st.header("Representación")
-#        st.image("https://static.streamlit.io/examples/dog.jpg", width=1080)
+
 def mostrar_tabla(datos: list[list], columnas: list[str]) -> None:
     """
     Dada una lista de filas y una lista con los nombres de las columnas.
@@ -110,10 +107,10 @@ def vista_mapa(tab, datos_mapa):
     """
     Dado un objeto TabContaines y datos_mapa una lista de diccionarios con las coordenadas de 
     las ciudades, el color y el tamaño de los circulos.
-    Genera el tab correspondiente a la pregunta: ¿Cuales son las ciudades con mayor 
-    promedio de dioxido de carbono?
-    mostrando con circulos más grandes las ciudades con mayor promedio y con 
-    circulos mas chicos las ciudades con menor promedio.
+    Genera el tab correspondiente a la pregunta: ¿Cuáes son las ciudades con mayor 
+    promedio de monóxido de carbono?
+    mostrando con círculos grandes las ciudades con mayor promedio y con círculos más chicos las
+    ciudades con menor promedio.
     """
     with tab:
         st.header("Mapa de cantidades")
@@ -162,7 +159,7 @@ def pregunta4(tab, datos):
 def pregunta5(tab, datos):
     """
     Dado un TabContainer y la estructura informe,
-    la función genera un grafico de a 15 mediciones realizadas en una ciudad seleccionada y sus respectivos
+    la función genera un gráfico de a 15 mediciones realizadas en una ciudad seleccionada y sus respectivos
     valores de AQI
     """
     with tab:

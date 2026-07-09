@@ -69,8 +69,8 @@ def contar_apariciones(ciudad: str, referencia: informe_dataset) -> None:
 def agregar_coordenadas(registro: list[str ,str, str], informe: informe_dataset) -> None:
     """
     Dadas las coordenadas de una ciudad, el nombre de la misma y un informe. la función agregara al informe las
-    coordenadas en le diccionario de la ciudad.
-    Los agregara:
+    coordenadas en el diccionario de la ciudad.
+    Los agregará:
     {
     "latitud": (float), "longitud", (float)
     }
@@ -84,9 +84,9 @@ def agregar_coordenadas(registro: list[str ,str, str], informe: informe_dataset)
 
 def representar_en_milecimos(num: str) -> int:
     """
-    Convierte un strig de un número con no más de 3 decimales a un numro entero
-    que representa el número de milecimos para formar dicho numero.
-    **COON DECIMALES SEPARADOS POR .**
+    Convierte un strig de un número con no más de 3 decimales a un número entero
+    que representa el número de milecimos para formar dicho número.
+    **CON DECIMALES SEPARADOS POR .**
     ejemplo:
     
     >>> representar_en_milecimos("5")
@@ -104,7 +104,7 @@ def representar_en_milecimos(num: str) -> int:
 def incrementar_datos_de_promedio(registro: list[str, str, str, str, str], informe: informe_dataset) -> None:
     """
     Dado el nombre de una ciudad y los datos "PM10_ug_m3", "PM2_5_ug_m3","Carbon_Monoxide_ug_m3", "Nitrogen_Dioxide_ug_m3"
-    la función ingrementa en la magnitud indicada los datos del mismo nombre.
+    la función incrementa en la magnitud indicada los datos del mismo nombre.
     """
 
     CIUDAD = 0
@@ -126,10 +126,10 @@ def incrementar_datos_de_promedio(registro: list[str, str, str, str, str], infor
 
 def formular_promedios(info: informe_dataset) -> None:
     """
-    realiza la divión respectiva a los valores promediados.
+    realiza la división respectiva a los valores promediados.
     """
     for data_ciudad in info.values():
-        # se usa divición parte entera para mantener el criterio de número de milecimos.
+        # se usa división parte entera para mantener el criterio de número de milecimos.
         data_ciudad["PM10_ug_m3"] /= data_ciudad["n_muestras"]
         data_ciudad["PM2_5_ug_m3"] /= data_ciudad["n_muestras"]
         data_ciudad["Carbon_Monoxide_ug_m3"] /= data_ciudad["n_muestras"]
@@ -165,7 +165,7 @@ def carga_ordenada(fecha: fecha, aqi: int, eventos: int, historial: list[datos_h
     """
     La función carga_ordenada espera la fecha, valor aqi, valor, eventos, el historial y
     el numero de registros hasta el momento.
-    La función agrega al historial los datos historicos manteniendo el orden por por fecha.
+    La función agrega al historial los datos historicos manteniendo el orden por fecha.
 
     Ejemplo:
     >>> historial = []
@@ -191,8 +191,8 @@ def carga_ordenada(fecha: fecha, aqi: int, eventos: int, historial: list[datos_h
 
 def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe_dataset) -> None:
     """
-    Dado un registros con Nombre de la ciudad, Timestamp, European_AQI y Hazardous_Event, junto con el informe
-    la funcíon completa el campo "Datos_cronologicos" de la ciudad indicada. Con una lista ordenada por fecha 
+    Dado un registro con Nombre de la ciudad, Timestamp, European_AQI y Hazardous_Event, junto con el informe
+    la función completa el campo "Datos_cronologicos" de la ciudad indicada. Con una lista ordenada por fecha 
     formada por tuplas (ternas) formadas por Timestamp, European_AQI y Hazardous_Event
     
     Ejemplo:
@@ -223,9 +223,9 @@ def cargar_datos_temporales(registro: list[str, str, str, str], informe: informe
     ciudad = registro[NOMBRE]
 
     if not("datos_temporales" in informe[ciudad]):
-        # Agregamos el parametro si este no se encuentra en la estructura.
+        # Agregamos el parámetro si este no se encuentra en la estructura.
         informe[ciudad]["datos_temporales"] = []
-    # Agregamos en cada ocación los datos
+    # Agregamos en cada ocasión los datos
     carga_ordenada(fecha_registro, aqi, ev, informe[ciudad]["datos_temporales"], informe[ciudad]["n_muestras"]-1)
 
 
