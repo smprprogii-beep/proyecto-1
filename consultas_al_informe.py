@@ -149,9 +149,17 @@ def ciudades_superiores_a(diccionario: dict[str,float],minimo: float):
             salida[ciudad] = promedio
     return salida
 
-def agrupar_por_meses(data: informe_dataset) -> list[int]:
+def promedio_de_eventos_por_mes(data: informe_dataset) -> list[int]:
     """
-    Dado un informe la función retornara la sumatoria de los Hazardous_Event por cada mes.
+    Dado un informe la función retornara el promedio de los Hazardous_Event por cada mes.
+    Donde cada mes esta indicado como indice de una lista:
+    0   : Enero
+    1   : Febrero
+        .
+        .
+        .
+    11  : Noviembre
+    12  : Diciembre
     """
     MES = 1
     recuento = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -159,6 +167,10 @@ def agrupar_por_meses(data: informe_dataset) -> list[int]:
         datos_temporales = datos_ciudad["datos_temporales"]
         for fecha, aqi, ev in datos_temporales:
             recuento[fecha[MES]-1]+=ev
+
+    total_de_mediciones = sum(recuento)
+    for i in range(12):
+        recuento[i] = (recuento[i] / total_de_mediciones)*100
 
     return recuento
 

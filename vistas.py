@@ -200,7 +200,7 @@ def pregunta6(tab, data:list):
     with tab:
         st.header("¿Cuáles son los meses que presentan mayor cantidad de eventos peligrosos?")
         fig, ax = plt.subplots()
-        ax.pie(data, labels=meses)
+        ax.pie(data, labels=meses, autopct='%1.1f%%')
         
         st.pyplot(fig)
 
@@ -225,4 +225,4 @@ def mostrar_vistas(datos: informe_dataset) -> None:
     vista_mapa(tab3, datos_mapa)
     pregunta4(tab4, adaptador_dioxido(datos))
     pregunta5(tab5, datos)
-    pregunta6(tab6, agrupar_por_meses(datos))
+    pregunta6(tab6, promedio_de_eventos_por_mes(datos))
